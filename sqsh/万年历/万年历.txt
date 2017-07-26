@@ -1,0 +1,131 @@
+  1 #include<stdio.h>
+  2 
+  3 int leapyear(int year);
+  4 int judgemonth(int year,int month);
+  5 void display(int year,int month,int calendar[]);
+  6 
+  7 
+  8 int main()
+  9 {
+ 10     int getyear,getmonth;
+ 11     int calendar[42] = {0};
+ 12     int year = 1900,month = 1,days = 0;
+ 13     int i,j,k,addDay = 0;
+ 14     calendar[1] = 1;
+ 15     //输入日期
+ 16     printf("请输入年月(日期需大于1900.1)：");
+ 17     scanf("%d.%d",&getyear,&getmonth);
+ 18     getchar();
+ 19     //计算1900.1到目标日期共有多少天
+ 20     while(getyear != year || getmonth != month)
+ 21     {
+ 22         days +=  judgemonth(year,month);
+ 23         if(12 == month)
+ 24         {
+ 25             month = 1;
+ 26             year++;
+ 27         }
+ 28         else
+ 29         {
+ 30             month++;
+ 31         }
+ 32     }
+ 33     //计算日期1号需要移动几位
+ 34     addDay = days%7;
+ 35     //移动日期1号
+ 36     for(i = 0;i < addDay;i++)
+ 37     {
+ 38         for(j = 0;j < 7;j++)
+ 39         {
+ 40             if(1 == calendar[j])
+ 41             {
+ 42                 if(j < 6)
+ 43                 {   
+ 44                     calendar[j] = 0;
+ 45                     calendar[j+1] = 1;
+ 46                 }
+ 47                 else
+ 48                 {
+ 49                     calendar[6] = 0;
+ 50                     calendar[0] = 1;
+ 51                 }
+ 52                 break;
+ 53             }
+ 54         }
+ 55     }
+ 56     //输出月历
+ 57     display(getyear,getmonth,calendar);
+ 58     return 0;
+ 59 }
+ 60 
+ 61 //用于判断闰年，若是则返回1，否则返回0
+ 62 int leapyear(int year)
+ 63 {   
+ 64     int flag = 0;
+ 65     flag = (0 == year%4 && 0 != year%100 || 0 == year%400) ? 1 : 0;
+ 66     return flag;
+ 67 }
+ 68 
+ 69 //用于计算某年的某月有多少天，并返回天数
+ 70 int judgemonth(int year,int month)
+ 71 {
+ 72     int addnum=30;
+ 73     switch(month)
+ 74     {
+ 75             case 1 : ;
+ 76             case 3 : ;
+ 77             case 5 : ;
+ 78             case 7 : ;
+ 79             case 8 : ;
+ 80             case 10 : ;
+ 81             case 12 : addnum = 31;break;
+ 82             case 2 : addnum = leapyear(year) == 1 ? 29 : 28;break;
+ 83             case 4 : ;
+ 84             case 6 : ;
+ 85             case 9 : ;
+ 86             case 11 : addnum = 30;break;
+ 87             default: printf("Error!");
+ 88     }
+ 89     return addnum;
+ 90 }
+ 91 
+ 92 //用于输出月历
+ 93 void display(int year,int month,int calendar[])
+ 94 {
+ 95 int i;
+ 96     int j = 0;
+ 97     int day = 1;
+ 98     int daynum = 30;
+ 99     daynum = judgemonth(year,month);
+100     printf("\n 星期天 星期一 星期二 星期三 星期四 星期五 星期六\n");
+101     for(i = 0;i < 42;i++)
+102     {
+103 
+104         if(1 == calendar[i])
+105         {
+106             printf("%7d",day);
+107             day++;
+108             calendar[i+1]=1;
+109         }
+110         else
+111         {
+112             printf("       ");
+113         }
+114         //标志day大于本月天数时退出循环
+115         if(day > daynum)
+116         {
+117             break;
+118         }
+119         if(j < 6)
+120         {
+121             j++;
+122         }
+123         else
+124         {
+125             j = 0;
+126             printf("\n");
+127         }
+128     }
+129     printf("\n");
+130 }
+131
