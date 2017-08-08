@@ -30,11 +30,26 @@ int main(int argc, char *argv[])
 	printf("打开文件成功\n");
 
 	int ret = -1;
+	
+	//read的返回值
 	char caBuf[4096] = {'\0'};
 	while (1)
 	{
 		memset(caBuf, '\0', 4096);
+		//初始化这个地址的内容：4096个字节中全是\0
 		ret = read(srcfd, caBuf, 4096);
+//READ(2)                    Linux Programmer's Manual                   READ(2)
+
+//NAME
+//       read - read from a file descriptor
+
+//SYNOPSIS
+//       #include <unistd.h>
+
+//       ssize_t read(int fd, void *buf, size_t count);
+	       //ssize_t 等价于int    size_t等价于 unsigned int 
+
+		
 		if (-1 == ret)
 		{
 			perror("read");
@@ -46,6 +61,20 @@ int main(int argc, char *argv[])
 			break;
 		}
 		write(destfd, caBuf, ret);
+//WRITE(2)                   Linux Programmer's Manual                  WRITE(2)
+
+//NAME
+//       write - write to a file descriptor
+//SYNOPSIS
+//       #include <unistd.h>
+
+//       ssize_t write(int fd, const void *buf, size_t count);
+//RETURN VALUE
+		//成功返回写入的字节大小
+	//失败返回-1
+
+
+		
 	}
 
 	close(srcfd);  //关闭文件
